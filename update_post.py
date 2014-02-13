@@ -41,7 +41,7 @@ class WordPress_Update(unittest.TestCase):
 		self.dr.quit()
 
 if __name__ == "__main__":
-	unittest.main()
+	unittest.main()  
 	
 	
 """
