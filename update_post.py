@@ -6,6 +6,7 @@ import time
 import unittest
 import random
 from public import login  #引入login文件
+from public import createpost
 
 class WordPress_Update(unittest.TestCase):
 	post_list_url = "http://127.0.0.1:8080/wordpress/wp-admin/edit.php"
@@ -16,6 +17,7 @@ class WordPress_Update(unittest.TestCase):
 	def test_update_post(self):
 		"""更新文章的用例"""
 		login.login(self.dr)   #调用login公用方法
+		createpost.create_post(self.dr)  #为了保持case的独立性，在更新之前先创建一个post文章
 		self.dr.get(self.post_list_url)
 		post = self.dr.find_element_by_partial_link_text("new post")
 		time.sleep(3)
@@ -40,3 +42,11 @@ class WordPress_Update(unittest.TestCase):
 
 if __name__ == "__main__":
 	unittest.main()
+	
+	
+"""
+更新文章标题的用例
+
+编辑标题含“new post”的文章，并在标题上追加“Cindy”字符和随机数
+缺陷：当随机数重复时，断言+随机数的断言方式则变得无意义
+"""
