@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 import unittest
 import  time
 from public import login   #从public文件夹中引人login文件
+from public import createpost
 
 class WordPress_Delete(unittest.TestCase):
 	post_list_url = "http://127.0.0.1:8080/wordpress/wp-admin/edit.php"
@@ -16,6 +17,7 @@ class WordPress_Delete(unittest.TestCase):
 	def test_delete_post1(self):
 		"""利用弹出菜单删除post的用例"""
 		login.login(self.dr)  #调用login公用方法
+		createpost.create_post(self.dr)
 		self.dr.get(self.post_list_url)
 		post = self.dr.find_element_by_partial_link_text("new post")
 		time.sleep(3)
@@ -32,6 +34,7 @@ class WordPress_Delete(unittest.TestCase):
 	def test_delete_post2(self):
 		"""选中后，利用下拉菜单删除post的用例"""
 		login.login(self.dr)   #调用login公用方法
+		createpost.create_post(self.dr)
 		self.dr.get(self.post_list_url)
 		self.dr.find_element_by_name("post[]").click()
 		#选择下拉选项"移至回收站"
@@ -53,3 +56,12 @@ class WordPress_Delete(unittest.TestCase):
 
 if __name__ == "__main__":
 	unittest.main()
+	
+	
+"""
+两种方法删除post的用例
+
+第一种：利用移动鼠标后的弹出菜单，引入ActionChains
+第二中：利用Select下拉菜单，引入Select
+缺陷：仅能删除现有的标题含“new post”的或者是checkbox的name为“post[]”的（列表中所有的checkbox的name都是一样的），经运行发现，两种方法均仅能删除最新的，不能随意删除任意一个
+"""
